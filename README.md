@@ -8,23 +8,52 @@ A Python application that captures speech from your microphone and automatically
 - Automatic typing of transcribed text
 - Turn-based formatting for natural speech patterns
 - Microphone audio stream processing
+- Toggle script for easy start/stop control
 
 ## Setup
 
-1. Install dependencies:
+1. Install dependencies using uv:
    ```bash
-   pip install assemblyai[extras] pyautogui
+   uv sync
    ```
 
-2. Create a `.env` file with your AssemblyAI API key:
+2. Set up environment variables:
+   ```bash
+   cp .env.example .env
    ```
-   ASSEMBLYAI_API_KEY=your_api_key_here
+   Edit `.env` and add your AssemblyAI API key:
+   ```
+   ASSEMBLYAI_API_KEY=your_actual_api_key_here
    ```
 
-3. Run the application:
-   ```bash
-   python main.py
-   ```
+3. Get your API key from [AssemblyAI](https://www.assemblyai.com/)
+
+## Usage
+
+### Direct execution:
+```bash
+uv run main.py
+```
+Stop with `Ctrl+C`
+
+### Toggle script (recommended):
+```bash
+./toggle_stt.sh
+```
+- First run: starts the application in background
+- Second run: stops the application
+- Logs are saved to `/tmp/stt_typer.log`
+
+### System-wide access:
+```bash
+sudo ln -s $(pwd)/toggle_stt.sh /usr/local/bin/toggle-stt
+toggle-stt
+```
+
+### Keyboard shortcut:
+Add to Lubuntu keyboard shortcuts:
+- Command: `/path/to/toggle_stt.sh`  
+- Key combination: your choice (e.g., `Super+S`)
 
 ## How it works
 
