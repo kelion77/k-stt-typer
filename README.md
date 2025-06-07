@@ -52,7 +52,7 @@ toggle-stt
 
 ### Keyboard shortcut:
 Add to Lubuntu keyboard shortcuts:
-- Command: `/path/to/toggle_stt.sh`  
+- Command: `/full/path/to/your/project/toggle_stt.sh`  
 - Key combination: your choice (e.g., `Super+S`)
 
 ## How it works

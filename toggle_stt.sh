@@ -3,7 +3,7 @@
 # STT Typer Toggle Script
 # Checks if the speech-to-text process is running and toggles it
 
-SCRIPT_DIR="/home/oleksii/projects/for_test/stt_typer"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROCESS_NAME="main.py"
 PID_FILE="/tmp/stt_typer.pid"
 
