@@ -1,0 +1,11 @@
+[project]
+name = "stt-typer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "assemblyai[extras]>=0.41.1",
+    "dotenv>=0.9.9",
+    "pyautogui>=0.9.54",
+]
