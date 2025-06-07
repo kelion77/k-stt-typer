@@ -10,6 +10,41 @@ A Python application that captures speech from your microphone and automatically
 - Microphone audio stream processing
 - Toggle script for easy start/stop control
 
+## System Requirements
+
+### Linux
+Install these system packages before running the application:
+
+**Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install python3-tk python3-dev alsa-utils pulseaudio-utils scrot xclip
+```
+
+**Fedora/RHEL:**
+```bash
+sudo dnf install tkinter python3-devel alsa-utils pulseaudio-utils scrot xclip
+```
+
+**Arch Linux:**
+```bash
+sudo pacman -S tk python alsa-utils pulseaudio scrot xclip
+```
+
+### macOS
+Most dependencies are built-in. You may need:
+```bash
+# Install Xcode command line tools if not already installed
+xcode-select --install
+```
+
+### General Requirements
+- **Python**: 3.13 or higher
+- **Microphone**: Working microphone with proper system permissions
+- **Audio System**: ALSA/PulseAudio (Linux) or Core Audio (macOS)
+- **Display Server**: X11 or Wayland (Linux) for GUI automation
+- **Permissions**: Microphone and accessibility permissions may be required
+
 ## Setup
 
 1. Install dependencies using uv:
