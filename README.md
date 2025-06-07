@@ -2,6 +2,21 @@
 
 A Python application that captures speech from your microphone and automatically types the transcribed text using AssemblyAI's real-time speech recognition.
 
+## 🚀 Quick Install
+
+Install with one command (Linux & macOS):
+
+```bash
+curl -sSL https://raw.githubusercontent.com/vertuzz/stt-typer/master/install.sh | bash
+```
+
+Or download and run manually:
+```bash
+wget https://raw.githubusercontent.com/vertuzz/stt-typer/master/install.sh
+chmod +x install.sh
+./install.sh
+```
+
 ## Features
 
 - Real-time speech-to-text conversion
