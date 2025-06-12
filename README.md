@@ -96,13 +96,3 @@ Add to Lubuntu keyboard shortcuts:
 ## How it works
 
 The application records audio from your microphone until you stop it with Ctrl+C. It then uploads the audio file to Google Gemini API for transcription and automatically types the transcribed text. The system supports multiple languages and automatically translates non-English speech to English.
-
-## Future Development
-
-- Add real-time streaming transcription
-- Create GUI interface for easier control
-- Add text formatting options (punctuation, capitalization)
-- Implement hotword detection for activation
-- Add support for custom vocabularies and domain-specific terms
-- Add configuration options for different audio sources
-- Implement custom keyboard shortcuts for start/stop
