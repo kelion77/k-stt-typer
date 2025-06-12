@@ -9,8 +9,15 @@ PID_FILE="/tmp/stt_typer.pid"
 
 # Check if process is running
 if pgrep -f "$PROCESS_NAME" > /dev/null; then
-    echo "STT Typer is running. Stopping..."
+    echo "STT Typer is running. Stopping gracefully..."
     pkill -f "$PROCESS_NAME"
+    
+    # Wait for process to finish current transcription
+    echo "Waiting for process to complete..."
+    while pgrep -f "$PROCESS_NAME" > /dev/null; do
+        sleep 1
+    done
+    
     rm -f "$PID_FILE"
     echo "STT Typer stopped."
 else

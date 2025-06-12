@@ -1,86 +1,142 @@
-# Install the assemblyai package by executing the command "pip install assemblyai"
-
 import logging
 import os
-from typing import Type
+import signal
+import sys
+import wave
+import pyaudio
+import threading
 from dotenv import load_dotenv
+from google import genai
+from google.genai import types
 
 load_dotenv()
 
-import assemblyai as aai
 import pyautogui
-from assemblyai.streaming.v3 import (
-    BeginEvent,
-    StreamingClient,
-    StreamingClientOptions,
-    StreamingError,
-    StreamingEvents,
-    StreamingParameters,
-    StreamingSessionParameters,
-    TerminationEvent,
-    TurnEvent,
-)
 
-api_key = os.getenv("ASSEMBLYAI_API_KEY")
+api_key = os.getenv("GOOGLE_API_KEY")
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Audio recording parameters
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
+RATE = 16000
+AUDIO_FILE = "/tmp/stt_recording.wav"
 
-def on_begin(self: Type[StreamingClient], event: BeginEvent):
-    print(f"Session started: {event.id}")
+# Global variables for recording control
+recording = False
+record_thread = None
 
+def signal_handler(signum, frame):
+    """Handle shutdown signals gracefully"""
+    global recording
+    print("\nShutdown signal received. Stopping recording...")
+    recording = False
 
-def on_turn(self: Type[StreamingClient], event: TurnEvent):
-    print(f"{event.transcript} ({event.end_of_turn})")
+def cleanup_audio_file():
+    """Remove temporary audio file"""
+    try:
+        if os.path.exists(AUDIO_FILE):
+            os.remove(AUDIO_FILE)
+    except Exception as e:
+        logger.error(f"Error cleaning up audio file: {e}")
+
+def record_audio():
+    """Record audio continuously until stopped"""
+    global recording
     
-    if event.end_of_turn and event.transcript and event.turn_is_formatted:
-        pyautogui.typewrite(event.transcript + " ")
-
-    if event.end_of_turn and not event.turn_is_formatted:
-        params = StreamingSessionParameters(
-            format_turns=True,
+    audio = pyaudio.PyAudio()
+    
+    try:
+        stream = audio.open(
+            format=FORMAT,
+            channels=CHANNELS,
+            rate=RATE,
+            input=True,
+            frames_per_buffer=1024
         )
+        
+        frames = []
+        print("Recording... Press Ctrl+C to stop.")
+        
+        while recording:
+            data = stream.read(1024)
+            frames.append(data)
+        
+        # Save recorded audio to file
+        with wave.open(AUDIO_FILE, 'wb') as wf:
+            wf.setnchannels(CHANNELS)
+            wf.setsampwidth(audio.get_sample_size(FORMAT))
+            wf.setframerate(RATE)
+            wf.writeframes(b''.join(frames))
+        
+        print(f"Audio saved to {AUDIO_FILE}")
+        
+    except Exception as e:
+        logger.error(f"Error during recording: {e}")
+    finally:
+        if 'stream' in locals():
+            stream.stop_stream()
+            stream.close()
+        audio.terminate()
 
-        self.set_params(params)
-
-
-def on_terminated(self: Type[StreamingClient], event: TerminationEvent):
-    print(
-        f"Session terminated: {event.audio_duration_seconds} seconds of audio processed"
-    )
-
-
-def on_error(self: Type[StreamingClient], error: StreamingError):
-    print(f"Error occurred: {error}")
+def transcribe_audio():
+    """Send audio file to Google Gemini for transcription"""
+    try:
+        if not os.path.exists(AUDIO_FILE):
+            print("No audio file found to transcribe.")
+            return
+        
+        client = genai.Client(api_key=api_key)
+        
+        print("Uploading audio file for transcription...")
+        myfile = client.files.upload(file=AUDIO_FILE)
+        
+        response = client.models.generate_content(
+            model="gemini-2.5-flash-preview-05-20",
+            contents=["Generate a transcript of the speech. Do not include any other text. Output only in grammatically correct english. IF YOU HEAR ANYTHING ELSE THAN ENGLISH, TRANSLATE IT TO ENGLISH.", myfile]
+        )
+        
+        if response.text:
+            # Strip any trailing whitespace/newlines that might cause Enter to be pressed
+            clean_text = response.text.strip()
+            print(f"Transcription: {clean_text}")
+            pyautogui.typewrite(clean_text)
+        else:
+            print("No transcription received.")
+            
+    except Exception as e:
+        logger.error(f"Error during transcription: {e}")
 
 
 def main():
-    client = StreamingClient(
-        StreamingClientOptions(
-            api_key=api_key,
-            api_host="streaming.assemblyai.com",
-        )
-    )
-
-    client.on(StreamingEvents.Begin, on_begin)
-    client.on(StreamingEvents.Turn, on_turn)
-    client.on(StreamingEvents.Termination, on_terminated)
-    client.on(StreamingEvents.Error, on_error)
-
-    client.connect(
-        StreamingParameters(
-            sample_rate=16000,
-            format_turns=True,
-        )
-    )
-
-    try:
-        client.stream(
-          aai.extras.MicrophoneStream(sample_rate=16000)
-        )
-    finally:
-        client.disconnect(terminate=True)
+    global recording, record_thread
+    
+    # Set up signal handlers for graceful shutdown
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    
+    if not api_key:
+        print("Error: GOOGLE_API_KEY not found in environment variables.")
+        sys.exit(1)
+    
+    # Clean up any existing audio file
+    cleanup_audio_file()
+    
+    # Start recording
+    recording = True
+    record_thread = threading.Thread(target=record_audio)
+    record_thread.start()
+    
+    # Wait for user to stop recording (Ctrl+C will set recording to False)
+    record_thread.join()
+        
+    # Transcribe the recorded audio
+    if os.path.exists(AUDIO_FILE):
+        transcribe_audio()
+        
+    cleanup_audio_file()
 
 
 if __name__ == "__main__":

@@ -1,29 +1,15 @@
 # Speech-to-Text Typer
 
-A Python application that captures speech from your microphone and automatically types the transcribed text using AssemblyAI's real-time speech recognition.
-
-## 🚀 Quick Install
-
-Install with one command (Linux & macOS):
-
-```bash
-curl -sSL https://raw.githubusercontent.com/vertuzz/stt-typer/master/install.sh | bash
-```
-
-Or download and run manually:
-```bash
-wget https://raw.githubusercontent.com/vertuzz/stt-typer/master/install.sh
-chmod +x install.sh
-./install.sh
-```
+A Python application that captures speech from your microphone and automatically types the transcribed text using Google Gemini API.
 
 ## Features
 
-- Real-time speech-to-text conversion
+- Record audio from microphone with manual control (Ctrl+C to stop)
+- Transcribe recorded audio using Google Gemini API
 - Automatic typing of transcribed text
-- Turn-based formatting for natural speech patterns
-- Microphone audio stream processing
+- Multi-language support with automatic translation to English
 - Toggle script for easy start/stop control
+- Background operation with logging
 
 ## System Requirements
 
@@ -33,17 +19,17 @@ Install these system packages before running the application:
 **Ubuntu/Debian:**
 ```bash
 sudo apt update
-sudo apt install python3-tk python3-dev alsa-utils pulseaudio-utils scrot xclip
+sudo apt install python3-dev portaudio19-dev xclip
 ```
 
 **Fedora/RHEL:**
 ```bash
-sudo dnf install tkinter python3-devel alsa-utils pulseaudio-utils scrot xclip
+sudo dnf install python3-devel portaudio-devel xclip
 ```
 
 **Arch Linux:**
 ```bash
-sudo pacman -S tk python alsa-utils pulseaudio scrot xclip
+sudo pacman -S python portaudio xclip
 ```
 
 ### macOS
@@ -51,13 +37,15 @@ Most dependencies are built-in. You may need:
 ```bash
 # Install Xcode command line tools if not already installed
 xcode-select --install
+# Install portaudio if needed
+brew install portaudio
 ```
 
 ### General Requirements
 - **Python**: 3.13 or higher
 - **Microphone**: Working microphone with proper system permissions
-- **Audio System**: ALSA/PulseAudio (Linux) or Core Audio (macOS)
-- **Display Server**: X11 or Wayland (Linux) for GUI automation
+- **Audio System**: PortAudio for microphone input
+- **Display Server**: GUI automation capabilities (built-in for most systems)
 - **Permissions**: Microphone and accessibility permissions may be required
 
 ## Setup
@@ -71,12 +59,12 @@ xcode-select --install
    ```bash
    cp .env.example .env
    ```
-   Edit `.env` and add your AssemblyAI API key:
+   Edit `.env` and add your Google API key:
    ```
-   ASSEMBLYAI_API_KEY=your_actual_api_key_here
+   GOOGLE_API_KEY=your_actual_api_key_here
    ```
 
-3. Get your API key from [AssemblyAI](https://www.assemblyai.com/)
+3. Get your API key from [Google AI Studio](https://aistudio.google.com/)
 
 ## Usage
 
@@ -84,7 +72,7 @@ xcode-select --install
 ```bash
 uv run main.py
 ```
-Stop with `Ctrl+C`
+Recording will start immediately. Stop recording with `Ctrl+C` to transcribe and type the audio.
 
 ### Toggle script (recommended):
 ```bash
@@ -107,14 +95,14 @@ Add to Lubuntu keyboard shortcuts:
 
 ## How it works
 
-The application connects to AssemblyAI's streaming API, captures audio from your microphone, and automatically types the transcribed text in real-time. It uses turn-based formatting to ensure natural speech patterns are maintained.
+The application records audio from your microphone until you stop it with Ctrl+C. It then uploads the audio file to Google Gemini API for transcription and automatically types the transcribed text. The system supports multiple languages and automatically translates non-English speech to English.
 
 ## Future Development
 
-- Add configuration options for different audio sources
-- Implement custom keyboard shortcuts for start/stop
-- Add support for multiple languages
+- Add real-time streaming transcription
 - Create GUI interface for easier control
 - Add text formatting options (punctuation, capitalization)
 - Implement hotword detection for activation
 - Add support for custom vocabularies and domain-specific terms
+- Add configuration options for different audio sources
+- Implement custom keyboard shortcuts for start/stop
