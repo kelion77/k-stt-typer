@@ -173,45 +173,13 @@ EOF
     fi
 }
 
-# Create toggle script
-create_toggle_script() {
-    print_step "Creating toggle script..."
+# Make toggle script executable
+setup_toggle_script() {
+    print_step "Setting up toggle script..."
     cd "$INSTALL_DIR"
     
-    cat > toggle_stt.sh << 'EOF'
-#!/bin/bash
-
-# Speech-to-Text Typer Toggle Script
-# Usage: ./toggle_stt.sh
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PID_FILE="/tmp/stt_typer.pid"
-LOG_FILE="/tmp/stt_typer.log"
-
-if [[ -f "$PID_FILE" ]]; then
-    PID=$(cat "$PID_FILE")
-    if ps -p "$PID" > /dev/null 2>&1; then
-        echo "Stopping STT Typer (PID: $PID)..."
-        kill "$PID"
-        rm -f "$PID_FILE"
-        echo "STT Typer stopped."
-    else
-        echo "PID file exists but process not running. Cleaning up..."
-        rm -f "$PID_FILE"
-    fi
-else
-    echo "Starting STT Typer..."
-    cd "$SCRIPT_DIR"
-    nohup uv run main.py > "$LOG_FILE" 2>&1 &
-    echo $! > "$PID_FILE"
-    echo "STT Typer started. PID: $(cat $PID_FILE)"
-    echo "Logs: $LOG_FILE"
-    echo "Use './toggle_stt.sh' again to stop."
-fi
-EOF
-    
     chmod +x toggle_stt.sh
-    print_success "Toggle script created"
+    print_success "Toggle script is ready"
 }
 
 # Add to PATH (optional)
@@ -287,7 +255,7 @@ main() {
     setup_project
     install_python_deps
     setup_env
-    create_toggle_script
+    setup_toggle_script
     setup_global_access
     show_usage
     
