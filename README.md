@@ -8,7 +8,7 @@
 
 ## Features
 
-- **One hotkey**: `⌃⌥Space` (Control + Option + Space)
+- **Dual hotkeys**: `⌃⌥Space` or `⇧⌘.` - choose what feels natural
 - **Completely free**: Local whisper.cpp execution, no API costs
 - **Privacy-first**: All processing done locally, no internet required
 - **Multilingual**: Supports Korean, English, and other languages via Whisper
@@ -44,10 +44,14 @@ When running Hammerspoon, grant **Accessibility** permission:
 
 ```
 1. In any app (VS Code, Notes, Chrome, etc.)
-2. Press ⌃⌥Space once → Recording starts
+2. Press ⌃⌥Space or ⇧⌘. once → Recording starts
 3. Speak in Korean (e.g., "안녕하세요")
-4. Press ⌃⌥Space again → Auto-typed!
+4. Press the same hotkey again → Auto-typed!
 ```
+
+**Available hotkeys:**
+- `⌃⌥Space` (Control + Option + Space) - Primary hotkey
+- `⇧⌘.` (Shift + Command + Period) - Secondary hotkey
 
 ## How It Works
 

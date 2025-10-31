@@ -32,11 +32,19 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cat > ~/.hammerspoon/init.lua << EOF
 -- STT Typer Hotkey Configuration
 -- Simple toggle - Python handles the paste
+
 -- Hide menu bar icon
 hs.menuIcon(false)
 
+-- Primary hotkey: Ctrl + Alt + Space
 hs.hotkey.bind({"ctrl", "alt"}, "space", function()
     -- Just run the toggle script, Python will handle everything
+    hs.task.new("/bin/bash", nil, {"${PROJECT_DIR}/toggle_whisper.sh"}):start()
+end)
+
+-- Secondary hotkey: Shift + Cmd + . (period)
+hs.hotkey.bind({"shift", "cmd"}, ".", function()
+    -- Same toggle script
     hs.task.new("/bin/bash", nil, {"${PROJECT_DIR}/toggle_whisper.sh"}):start()
 end)
 EOF
@@ -52,8 +60,10 @@ echo "1. Hammerspoon will open automatically"
 echo "2. Click 'Open' if prompted"
 echo "3. Allow Accessibility permissions when asked"
 echo "4. Look for Hammerspoon icon in menu bar (🔨)"
-echo "5. Press ⌃⌥Space (Control+Option+Space) anywhere!"
+echo "5. Press hotkey anywhere to use STT!"
 echo ""
-echo "Done! Your hotkey is now: ⌃⌥Space"
+echo "Done! Your hotkeys are configured:"
+echo "  - Primary: ⌃⌥Space (Control+Option+Space)"
+echo "  - Secondary: ⇧⌘. (Shift+Command+Period)"
 echo ""
 
