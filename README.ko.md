@@ -17,6 +17,25 @@ Mac에서 **단축키 하나로** 음성을 텍스트로 변환하는 도구 - 9
 
 ## 빠른 시작
 
+### 사전 요구사항
+
+설치 전에 다음을 준비해주세요:
+
+1. **Homebrew** 설치 ([https://brew.sh](https://brew.sh))
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+2. **PortAudio** 라이브러리 (PyAudio에 필수)
+   ```bash
+   brew install portaudio
+   ```
+
+3. **uv** 패키지 매니저 (없으면 자동 설치됨)
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
 ### 설치
 
 ```bash
@@ -24,7 +43,8 @@ Mac에서 **단축키 하나로** 음성을 텍스트로 변환하는 도구 - 9
 git clone https://github.com/kelion77/k-stt-typer.git
 cd k-stt-typer
 
-# Python 의존성 설치
+# Python 의존성 설치 (uv가 없으면 자동 설치됨)
+# "command not found: uv" 에러가 나면: $HOME/.local/bin/uv sync 실행
 uv sync
 
 # Whisper.cpp + 모델 설치
@@ -36,9 +56,24 @@ uv sync
 
 ### 권한 설정
 
-Hammerspoon 실행 시 **접근성 권한** 요청:
-- System Settings → Privacy & Security → Accessibility
-- **Hammerspoon** 체크
+#### 1. 접근성 권한 (필수)
+Hammerspoon 실행 시 **접근성 권한** 부여:
+- 시스템 설정 → 개인 정보 보호 및 보안 → 손쉬운 사용
+- **Hammerspoon** 찾아서 활성화
+- 자물쇠 아이콘을 클릭해 변경 권한 필요할 수 있음
+
+#### 2. 마이크 권한 (필수)
+음성 녹음을 위해 **마이크 권한** 부여:
+- 시스템 설정 → 개인 정보 보호 및 보안 → 마이크
+- **Python** 또는 **터미널** 활성화 (실행 방식에 따라)
+- "is a is is" 같은 이상한 결과가 나온다면 이 권한을 먼저 확인하세요
+
+#### 3. Hammerspoon 실행
+설치 후 Hammerspoon이 자동으로 실행됩니다. 안 되면:
+```bash
+open -a Hammerspoon
+```
+메뉴 바에서 Hammerspoon 아이콘(🔨)을 확인하세요.
 
 ### 사용
 
@@ -205,6 +240,64 @@ Whisper는 99개 이상의 언어를 지원합니다:
 
 ## 문제 해결
 
+### 이상한 텍스트가 나올 때 (예: "is a is is is")
+
+음성 대신 무의미한 텍스트가 출력되면:
+
+1. **마이크 권한 확인** (가장 흔한 원인)
+   - 시스템 설정 → 개인 정보 보호 및 보안 → 마이크
+   - **Python** 또는 **터미널** 활성화
+   - 권한 부여 후 앱 재시작
+
+2. **마이크 작동 확인**
+   - 음성 메모 앱에서 녹음 테스트
+   - 시스템 설정 → 사운드 → 입력에서 입력 레벨 확인
+
+3. **로그 확인**
+   ```bash
+   tail -f /tmp/stt_whisper.log
+   ```
+
+### 설치 문제
+
+#### `command not found: uv`
+uv 패키지 매니저를 PATH에서 찾을 수 없습니다. 전체 경로로 실행:
+```bash
+$HOME/.local/bin/uv sync
+```
+
+또는 PATH에 추가:
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+#### `fatal error: 'portaudio.h' file not found`
+PortAudio 라이브러리가 없어 PyAudio 빌드 실패:
+```bash
+brew install portaudio
+uv sync  # 재시도
+```
+
+### 성능 문제 (인텔 맥)
+
+**참고**: 이 도구는 Apple Silicon Mac (M1/M2/M3/M4)에서 Metal GPU 가속으로 최적의 성능을 발휘합니다.
+
+**인텔 맥**에서 전사가 느리다면:
+- CPU 전용 처리로 느림 (Metal GPU 미지원)
+- `small` 대신 `base` 모델 사용 권장 (더 빠름)
+- 전사 시간이 1-2초 대신 5-10초 걸릴 수 있음
+
+base 모델로 전환:
+```bash
+# 1. base 모델 다운로드
+cd whisper.cpp
+bash ./models/download-ggml-model.sh base
+
+# 2. whisper_transcriber.py 27번째 줄 수정
+# 변경: WHISPER_MODEL = WHISPER_CPP_DIR / "models" / "ggml-base.bin"
+```
+
 ### 마이크 아이콘이 계속 켜져 있을 때
 
 주황색 마이크가 녹음 중지 후에도 사라지지 않으면:
@@ -214,7 +307,7 @@ Whisper는 99개 이상의 언어를 지원합니다:
 ./stop_all.sh
 ```
 
-**원인**: 프로세스가 중복 실행되었거나 제대로 종료되지 않음  
+**원인**: 프로세스가 중복 실행되었거나 제대로 종료되지 않음
 **해결**: 위 스크립트가 모든 프로세스를 정리하고 마이크 아이콘이 사라집니다
 
 수동으로 확인하려면:
@@ -228,16 +321,30 @@ rm -f /tmp/stt_whisper.pid
 ```
 
 ### 붙여넣기가 안 될 때
-→ System Settings → Privacy & Security → Accessibility
-→ Python / Python.app 체크
+→ 시스템 설정 → 개인 정보 보호 및 보안 → 손쉬운 사용
+→ **Hammerspoon** 활성화
 
 ### 전사 정확도가 낮을 때
-→ 조용한 환경에서 마이크에 가까이 말하기  
+→ 조용한 환경에서 마이크에 가까이 말하기
+→ 마이크 권한 확인 (위 참조)
 → 또는 더 큰 모델 사용 (small, medium)
+
+### Hammerspoon이 실행되지 않을 때
+```bash
+# 수동 실행
+open -a Hammerspoon
+
+# 설치 확인
+ls -la /Applications/Hammerspoon.app
+```
 
 ### 로그 확인
 ```bash
+# 메인 로그
 tail -f /tmp/stt_whisper.log
+
+# 토글 디버그 로그
+tail -f /tmp/stt_whisper_toggle_debug.log
 ```
 
 ## 모델 비교

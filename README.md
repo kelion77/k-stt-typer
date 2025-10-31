@@ -17,6 +17,25 @@
 
 ## Quick Start
 
+### Prerequisites
+
+Before installation, ensure you have:
+
+1. **Homebrew** installed ([https://brew.sh](https://brew.sh))
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+2. **PortAudio** library (required for PyAudio)
+   ```bash
+   brew install portaudio
+   ```
+
+3. **uv** package manager (will auto-install if missing)
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
 ### Installation
 
 ```bash
@@ -24,7 +43,8 @@
 git clone https://github.com/kelion77/k-stt-typer.git
 cd k-stt-typer
 
-# Install Python dependencies
+# Install Python dependencies (uv will auto-install if missing)
+# If you see "command not found: uv", run: $HOME/.local/bin/uv sync
 uv sync
 
 # Install Whisper.cpp + models
@@ -36,9 +56,24 @@ uv sync
 
 ### Permission Setup
 
+#### 1. Accessibility Permission (Required)
 When running Hammerspoon, grant **Accessibility** permission:
 - System Settings → Privacy & Security → Accessibility
-- **Hammerspoon** check
+- Find and enable **Hammerspoon**
+- You may need to click the lock icon to make changes
+
+#### 2. Microphone Permission (Required)
+For audio recording, grant **Microphone** permission:
+- System Settings → Privacy & Security → Microphone
+- Find and enable **Python** or **Terminal** (depending on how you run it)
+- If you see gibberish transcriptions like "is a is is", check this permission first
+
+#### 3. Launch Hammerspoon
+After installation, Hammerspoon should launch automatically. If not:
+```bash
+open -a Hammerspoon
+```
+Look for the Hammerspoon icon (🔨) in your menu bar.
 
 ### Usage
 
@@ -205,6 +240,64 @@ See [whisper.cpp language codes](https://github.com/ggml-org/whisper.cpp) for fu
 
 ## Troubleshooting
 
+### Gibberish or incorrect transcriptions (e.g., "is a is is is")
+
+If you get nonsensical results instead of your speech:
+
+1. **Check Microphone Permission** (most common issue)
+   - System Settings → Privacy & Security → Microphone
+   - Enable **Python** or **Terminal**
+   - Restart the app after granting permission
+
+2. **Test microphone is working**
+   - Try recording in Voice Memos app
+   - Check input level in System Settings → Sound → Input
+
+3. **Check logs for errors**
+   ```bash
+   tail -f /tmp/stt_whisper.log
+   ```
+
+### Installation Issues
+
+#### `command not found: uv`
+The uv package manager was not found in PATH. Use the full path:
+```bash
+$HOME/.local/bin/uv sync
+```
+
+Or add it to your PATH:
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+#### `fatal error: 'portaudio.h' file not found`
+PyAudio build failed due to missing PortAudio library:
+```bash
+brew install portaudio
+uv sync  # Retry installation
+```
+
+### Performance Issues (Intel Macs)
+
+**Note**: This tool works best on Apple Silicon Macs (M1/M2/M3/M4) with Metal GPU acceleration.
+
+If you're on an **Intel Mac** and experiencing slow transcription:
+- CPU-only processing is slower (no Metal GPU support)
+- Consider using the `base` model instead of `small` for faster processing
+- Transcription may take 5-10 seconds instead of 1-2 seconds
+
+To switch to base model:
+```bash
+# 1. Download base model
+cd whisper.cpp
+bash ./models/download-ggml-model.sh base
+
+# 2. Edit whisper_transcriber.py line 27
+# Change: WHISPER_MODEL = WHISPER_CPP_DIR / "models" / "ggml-base.bin"
+```
+
 ### Microphone icon stays on
 
 If the orange microphone icon doesn't disappear after stopping:
@@ -229,15 +322,29 @@ rm -f /tmp/stt_whisper.pid
 
 ### Auto-paste not working
 → System Settings → Privacy & Security → Accessibility
-→ Python / Python.app check
+→ Enable **Hammerspoon**
 
 ### Low transcription accuracy
 → Speak close to microphone in quiet environment
+→ Check microphone permission (see above)
 → Or use larger model (small, medium)
+
+### Hammerspoon not launching
+```bash
+# Launch manually
+open -a Hammerspoon
+
+# Check if installed
+ls -la /Applications/Hammerspoon.app
+```
 
 ### View logs
 ```bash
+# Main log
 tail -f /tmp/stt_whisper.log
+
+# Toggle debug log
+tail -f /tmp/stt_whisper_toggle_debug.log
 ```
 
 ## Model Comparison
