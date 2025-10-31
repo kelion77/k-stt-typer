@@ -45,9 +45,9 @@ make
 cd ..
 
 # Download models
-echo "📥 Downloading Whisper base model (141MB)..."
+echo "📥 Downloading Whisper small model (466MB)..."
 cd whisper.cpp
-bash ./models/download-ggml-model.sh base
+bash ./models/download-ggml-model.sh small
 
 echo "📥 Downloading VAD model (864KB)..."
 bash ./models/download-vad-model.sh silero-v5.1.2
