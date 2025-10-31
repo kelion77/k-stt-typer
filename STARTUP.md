@@ -1,207 +1,209 @@
-# 🚀 재부팅 후 시작 가이드
+# Startup Guide After Reboot
 
-## ✅ 현재 상태
+**[한국어 문서](STARTUP.ko.md)**
 
-- ✅ Hammerspoon 메뉴바 아이콘 숨김 설정 완료
-- ✅ 단축키 `⌃⌥Space`는 항상 작동
+## Current Status
+
+- Hammerspoon menubar icon hidden
+- Hotkey `⌃⌥Space` always works
 
 ---
 
-## 🔄 리부트 후 최초 실행
+## After Reboot
 
-### 방법 1: Hammerspoon 자동 시작 (권장)
+### Method 1: Hammerspoon Auto-Start (Recommended)
 
-**한 번만 설정하면 끝!**
+**One-time setup!**
 
-1. **Hammerspoon 열기**
+1. **Open Hammerspoon**
    ```bash
    open -a Hammerspoon
    ```
 
-2. **메뉴바에서 Hammerspoon 아이콘 클릭** (잠깐 보임)
+2. **Click Hammerspoon icon in menubar** (appears temporarily)
 
-3. **"Launch Hammerspoon at login" 체크** ✅
+3. **Check "Launch Hammerspoon at login"**
 
-4. **완료!** 이제 재부팅해도 자동 시작
-   - 메뉴바 아이콘은 보이지 않음 (이미 설정됨)
-   - `⌃⌥Space` 단축키 바로 사용 가능
+4. **Done!** Now auto-starts after reboot
+   - Menubar icon stays hidden (already configured)
+   - `⌃⌥Space` hotkey works immediately
 
 ---
 
-### 방법 2: 수동 시작
+### Method 2: Manual Start
 
-재부팅 후 Hammerspoon이 안 떠있으면:
+If Hammerspoon is not running after reboot:
 
 ```bash
 open -a Hammerspoon
 ```
 
-또는 Spotlight (`⌘Space`)에서 "Hammerspoon" 검색해서 실행
+Or search "Hammerspoon" in Spotlight (`⌘Space`) and launch
 
 ---
 
-## 🎤 마이크 표시 이해하기
+## Understanding Microphone Indicator
 
-### 현재 동작:
+### Current Behavior:
 
-1. **평소**: Hammerspoon 아이콘 안 보임 ✅
-2. **⌃⌥Space 누르면**: 
-   - macOS 시스템이 마이크 사용 감지
-   - **제어 센터에 주황색 마이크 표시** 🎤
-3. **녹음 중지하면**: 마이크 표시 사라짐
+1. **Normally**: Hammerspoon icon hidden
+2. **Press ⌃⌥Space**:
+   - macOS detects microphone usage
+   - **Orange microphone indicator appears in Control Center**
+3. **Stop recording**: Microphone indicator disappears
 
-### 주황색 마이크 표시:
+### Orange Microphone Indicator:
 
 ```
-제어 센터 (오른쪽 위) → 🎤 주황색 점
+Control Center (top right) → 🎤 Orange dot
 ```
 
-이것은:
-- ✅ **정상입니다!**
-- macOS 보안 기능 (앱이 마이크 사용 중임을 표시)
-- 녹음 중일 때만 나타남
-- 이것은 **숨길 수 없습니다** (보안상)
+This is:
+- **Normal behavior!**
+- macOS security feature (shows app is using microphone)
+- Only appears while recording
+- **Cannot be hidden** (for security)
 
 ---
 
-## 🔧 완전 자동화 설정
+## Full Automation Setup
 
-### 1. Hammerspoon 로그인 시 자동 시작
+### 1. Hammerspoon Auto-Start on Login
 
 ```bash
-# Hammerspoon 실행
+# Launch Hammerspoon
 open -a Hammerspoon
 
-# 메뉴바 아이콘 클릭 → Preferences → "Launch Hammerspoon at login" ✅
+# Click menubar icon → Preferences → "Launch Hammerspoon at login" check
 ```
 
-### 2. 확인
+### 2. Verify
 
-재부팅 후:
+After reboot:
 ```bash
-# Hammerspoon이 실행 중인지 확인
+# Check if Hammerspoon is running
 ps aux | grep Hammerspoon | grep -v grep
 ```
 
-실행 중이면 → 자동 시작 성공!
-아무것도 안 나오면 → 수동으로 `open -a Hammerspoon`
+If running → Auto-start success!
+If nothing shown → Manually run `open -a Hammerspoon`
 
 ---
 
-## 📋 빠른 체크리스트
+## Quick Checklist
 
-재부팅 후:
+After reboot:
 
-1. [ ] Hammerspoon 실행 중? 
-   - 확인: `ps aux | grep Hammerspoon | grep -v grep`
-   - 안 떠있으면: `open -a Hammerspoon`
+1. [ ] Hammerspoon running?
+   - Check: `ps aux | grep Hammerspoon | grep -v grep`
+   - If not: `open -a Hammerspoon`
 
-2. [ ] 메뉴바에 Hammerspoon 아이콘 안 보임? ✅ (정상)
+2. [ ] Hammerspoon icon hidden in menubar? (normal)
 
-3. [ ] `⌃⌥Space` 작동?
-   - Notes 열고 테스트
-   - 작동 안 하면: Hammerspoon 재시작
+3. [ ] `⌃⌥Space` works?
+   - Test in Notes app
+   - If not: Restart Hammerspoon
 
 ---
 
-## 🎯 예상 동작
+## Expected Behavior
 
-### 정상 상태:
+### Normal State:
 ```
-평소:
-- 메뉴바: 깨끗함 (아이콘 없음)
-- 단축키: 작동
+Normally:
+- Menubar: Clean (no icon)
+- Hotkey: Works
 
-녹음 중:
-- 메뉴바: 🎤 주황색 마이크 표시 (macOS 시스템)
-- 단축키: ⌃⌥Space로 중지
+While recording:
+- Menubar: 🎤 Orange microphone indicator (macOS system)
+- Hotkey: Press ⌃⌥Space to stop
 
-녹음 후:
-- 메뉴바: 깨끗함 (마이크 표시 사라짐)
-- 텍스트: 자동 입력됨
+After recording:
+- Menubar: Clean (microphone indicator disappears)
+- Text: Auto-typed
 ```
 
 ---
 
-## 🐛 문제 해결
+## Troubleshooting
 
-### 🎤 주황색 마이크 아이콘이 계속 켜져있을 때 (가장 흔함!)
+### Orange microphone icon stays on (Most Common!)
 
-**증상**: 녹음을 중지했는데도 제어 센터에 주황색 마이크가 계속 표시됨
+**Symptom**: Control Center shows orange microphone even after stopping recording
 
-**원인**: `main_whisper.py` 프로세스가 백그라운드에서 계속 실행 중
+**Cause**: `main_whisper.py` process still running in background
 
-**즉시 해결**:
+**Immediate Solution**:
 ```bash
-# 긴급 정지 스크립트 실행
-cd k-stt-typer  # 또는 프로젝트 디렉토리
+# Run emergency stop script
+cd k-stt-typer  # or your project directory
 ./stop_all.sh
 ```
 
-**수동 해결**:
+**Manual Solution**:
 ```bash
-# 1. 실행 중인 프로세스 확인
+# 1. Check running processes
 ps aux | grep main_whisper
 
-# 2. 모두 강제 종료
+# 2. Force kill all
 pkill -9 -f main_whisper.py
 
-# 3. PID 파일 정리
+# 3. Clean PID files
 rm -f /tmp/stt_whisper.pid /tmp/stt_whisper.status
 ```
 
-**예방**: 최신 `toggle_whisper.sh`는 이 문제를 자동으로 방지합니다 ✅
+**Prevention**: Latest `toggle_whisper.sh` prevents this automatically
 
 ---
 
-### Hammerspoon 아이콘이 계속 보이면:
+### Hammerspoon icon keeps showing:
 
 ```bash
-# 1. 설정 확인
+# 1. Check configuration
 cat ~/.hammerspoon/init.lua | grep menuIcon
-# → hs.menuIcon(false) 가 있어야 함
+# → Should have hs.menuIcon(false)
 
-# 2. Hammerspoon 재시작
+# 2. Restart Hammerspoon
 killall Hammerspoon
 open -a Hammerspoon
 
-# 3. 아이콘 사라졌는지 확인
+# 3. Verify icon is gone
 ```
 
-### 단축키가 작동 안 하면:
+### Hotkey not working:
 
 ```bash
-# Hammerspoon이 실행 중인지 확인
+# Check if Hammerspoon is running
 ps aux | grep Hammerspoon
 
-# 안 떠있으면 실행
+# If not running, launch it
 open -a Hammerspoon
 
-# 로그 확인
+# Check logs
 tail -f /tmp/stt_whisper_toggle_debug.log
 ```
 
-### 마이크 권한 오류:
+### Microphone permission error:
 
 ```
 System Settings → Privacy & Security → Microphone
-→ Python / Terminal ✅ 체크
+→ Python / Terminal check
 ```
 
 ---
 
-## 💡 팁
+## Tips
 
-### 자동 시작 확인:
+### Check auto-start:
 
 ```bash
-# 로그인 항목 확인
+# Check login items
 osascript -e 'tell application "System Events" to get the name of every login item'
 ```
 
-"Hammerspoon"이 있으면 자동 시작 설정됨!
+If "Hammerspoon" appears, auto-start is configured!
 
-### Hammerspoon 완전 재시작:
+### Complete Hammerspoon restart:
 
 ```bash
 killall Hammerspoon && sleep 1 && open -a Hammerspoon
@@ -209,26 +211,25 @@ killall Hammerspoon && sleep 1 && open -a Hammerspoon
 
 ---
 
-## 📝 요약
+## Summary
 
-### 한 번만 하면 됨:
-1. ✅ `hs.menuIcon(false)` 설정 완료 (이미 됨)
-2. Hammerspoon → "Launch at login" 체크
+### One-time Setup:
+1. `hs.menuIcon(false)` configured (already done)
+2. Hammerspoon → "Launch at login" check
 
-### 재부팅 후:
-- Hammerspoon 자동 시작 (설정했으면)
-- 아이콘 안 보임 ✅
-- `⌃⌥Space` 바로 사용 가능
-- 녹음 중에만 🎤 표시 (macOS 시스템)
+### After Reboot:
+- Hammerspoon auto-starts (if configured)
+- Icon stays hidden
+- `⌃⌥Space` ready to use
+- 🎤 indicator only while recording (macOS system)
 
 ---
 
-## 🎉 완료!
+## Complete!
 
-이제:
-- ✅ Hammerspoon 아이콘 안 보임
-- ✅ 녹음 중에만 🎤 마이크 표시 (정상)
-- ✅ 재부팅해도 자동 작동 (로그인 시 자동 시작 설정 시)
+Now you have:
+- Hammerspoon icon hidden
+- 🎤 Microphone indicator only while recording (normal)
+- Auto-start after reboot (if configured)
 
-**주황색 마이크 표시는 macOS 보안 기능이므로 정상입니다!** 🎤
-
+**The orange microphone indicator is a macOS security feature - this is normal!**

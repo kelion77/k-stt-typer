@@ -1,59 +1,60 @@
 # Contributing to STT Typer
 
-## 🙏 기여 환영합니다!
+**[한국어 문서](CONTRIBUTING.ko.md)**
 
-이 프로젝트에 관심을 가져주셔서 감사합니다. 모든 형태의 기여를 환영합니다!
+## Welcome Contributors!
 
-## 🐛 버그 리포트
+Thank you for your interest in this project. All forms of contributions are welcome!
 
-버그를 발견하셨다면:
+## Bug Reports
 
-1. [Issues](https://github.com/kelion77/k-stt-typer/issues)에서 동일한 버그가 이미 보고되었는지 확인
-2. 새 이슈 생성
-3. 다음 정보 포함:
-   - macOS 버전
-   - Apple Silicon 모델 (M1/M2/M3/M4)
-   - Python 버전
-   - 발생한 오류 메시지
-   - 재현 방법
+If you found a bug:
 
-## 💡 기능 제안
+1. Check if the bug has already been reported in [Issues](https://github.com/kelion77/k-stt-typer/issues)
+2. Create a new issue
+3. Include the following information:
+   - macOS version
+   - Apple Silicon model (M1/M2/M3/M4)
+   - Python version
+   - Error message
+   - Steps to reproduce
 
-새로운 기능을 제안하고 싶으시다면:
+## Feature Requests
 
-1. [Issues](https://github.com/kelion77/k-stt-typer/issues)에 Feature Request 생성
-2. 기능이 필요한 이유와 사용 사례 설명
+If you want to suggest a new feature:
 
-## 🔧 Pull Request
+1. Create a Feature Request in [Issues](https://github.com/kelion77/k-stt-typer/issues)
+2. Explain why the feature is needed and use cases
 
-코드 기여를 원하신다면:
+## Pull Requests
 
-1. 저장소를 Fork
-2. 새 브랜치 생성 (`git checkout -b feature/amazing-feature`)
-3. 변경사항 커밋 (`git commit -m 'Add amazing feature'`)
-4. 브랜치에 Push (`git push origin feature/amazing-feature`)
-5. Pull Request 생성
+If you want to contribute code:
 
-### 코딩 가이드라인
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Create a Pull Request
 
-- Python 코드는 PEP 8 스타일 가이드 준수
-- 코드 내 주석은 영어로 작성
-- Shell 스크립트는 POSIX 호환성 유지
-- 새 기능에는 문서 업데이트 포함
+### Coding Guidelines
 
-## 📝 문서 개선
+- Python code follows PEP 8 style guide
+- Code comments in English
+- Shell scripts maintain POSIX compatibility
+- New features include documentation updates
 
-문서 오타, 설명 개선, 번역 등도 환영합니다!
+## Documentation Improvements
 
-## 🌟 다른 방법으로 기여하기
+Typo fixes, explanation improvements, translations are all welcome!
 
-- ⭐ GitHub Star로 프로젝트 지원
-- 📢 SNS에 프로젝트 공유
-- 📝 블로그에 사용 후기 작성
+## Other Ways to Contribute
 
-## 질문이 있으신가요?
+- Star the project on GitHub
+- Share the project on social media
+- Write about your experience on your blog
 
-[Issues](https://github.com/kelion77/k-stt-typer/issues)에 질문을 남겨주세요!
+## Questions?
 
-감사합니다! 🎉
+Feel free to ask in [Issues](https://github.com/kelion77/k-stt-typer/issues)!
 
+Thank you!

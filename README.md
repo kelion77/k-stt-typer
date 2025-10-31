@@ -1,196 +1,251 @@
 # STT Typer - Whisper.cpp
 
-Mac에서 **단축키 하나로** 한국어 음성을 텍스트로 변환하는 도구
+**One hotkey** speech-to-text tool for Mac - supports 99+ languages
 
-> 이 프로젝트는 [vertuzz/stt-typer](https://github.com/vertuzz/stt-typer)와 [whisper.cpp](https://github.com/ggml-org/whisper.cpp)를 기반으로 만들어졌습니다.
+> This project is based on [vertuzz/stt-typer](https://github.com/vertuzz/stt-typer) and [whisper.cpp](https://github.com/ggml-org/whisper.cpp).
 
-## ✨ 특징
+**[한국어 문서](README.ko.md)**
 
-- 🎤 **단축키 하나**: `⌃⌥Space` (Control + Option + Space)
-- 🆓 **완전 무료**: Whisper.cpp 로컬 실행, API 비용 없음
-- 🔒 **프라이버시**: 모든 처리가 로컬에서, 인터넷 불필요
-- 🇰🇷 **한국어 완벽 지원**: Whisper 모델 자체가 다국어 지원
-- ⚡ **GPU 가속**: Apple Silicon (M1/M2/M3/M4) Metal 자동 활성화
-- ✅ **자동 붙여넣기**: 커서 위치에 자동 입력
+## Features
 
-## 🚀 빠른 시작
+- **One hotkey**: `⌃⌥Space` (Control + Option + Space)
+- **Completely free**: Local whisper.cpp execution, no API costs
+- **Privacy-first**: All processing done locally, no internet required
+- **Multilingual**: Supports Korean, English, and other languages via Whisper
+- **GPU acceleration**: Apple Silicon (M1/M2/M3/M4) Metal auto-enabled
+- **Auto-paste**: Automatically types at cursor position
 
-### 1. 설치 (5분)
+## Quick Start
+
+### Installation
 
 ```bash
-# 저장소 클론
+# Clone repository
 git clone https://github.com/kelion77/k-stt-typer.git
 cd k-stt-typer
 
-# Python 의존성 설치
+# Install Python dependencies
 uv sync
 
-# Whisper.cpp + 모델 설치
+# Install Whisper.cpp + models
 ./install_whisper.sh
 
-# Hammerspoon (단축키) 설치
+# Install Hammerspoon (hotkey manager)
 ./setup_global_hotkey.sh
 ```
 
-### 2. 권한 설정
+### Permission Setup
 
-Hammerspoon 실행 시 **접근성 권한** 요청:
+When running Hammerspoon, grant **Accessibility** permission:
 - System Settings → Privacy & Security → Accessibility
-- **Hammerspoon** ✅ 체크
+- **Hammerspoon** check
 
-### 3. 사용
+### Usage
 
 ```
-1. 아무 앱에서나 (VS Code, Notes, Chrome 등)
-2. ⌃⌥Space 한 번 → 녹음 시작
-3. 한국어로 말하기 (예: "안녕하세요")
-4. ⌃⌥Space 다시 → 자동으로 입력됨!
+1. In any app (VS Code, Notes, Chrome, etc.)
+2. Press ⌃⌥Space once → Recording starts
+3. Speak in Korean (e.g., "안녕하세요")
+4. Press ⌃⌥Space again → Auto-typed!
 ```
 
-## 🔧 작동 방식
+## How It Works
 
 ```
 ⌃⌥Space (Hammerspoon)
   ↓
 toggle_whisper.sh
   ↓
-main_whisper.py (녹음)
+main_whisper.py (recording)
   ↓
-⌃⌥Space (중지)
+⌃⌥Space (stop)
   ↓
-Whisper.cpp (한글 전사)
+Whisper.cpp (transcription)
   ↓
-pynput (Cmd+V 자동 실행)
+pynput (Cmd+V auto-paste)
   ↓
-커서 위치에 입력! ✨
+Typed at cursor!
 ```
 
-## 📁 주요 파일
+## Key Files
 
 ```
 k-stt-typer/
-├── main_whisper.py           # 메인 앱 (녹음 + 전사 + 붙여넣기)
-├── whisper_transcriber.py    # Whisper.cpp 통합 모듈
-├── toggle_whisper.sh         # 토글 스크립트
-├── install_whisper.sh        # Whisper.cpp 설치
-├── setup_global_hotkey.sh    # Hammerspoon 설치
-└── whisper.cpp/              # Whisper.cpp (로컬 STT)
+├── main_whisper.py           # Main app (record + transcribe + paste)
+├── whisper_transcriber.py    # Whisper.cpp integration module
+├── toggle_whisper.sh         # Toggle script
+├── install_whisper.sh        # Whisper.cpp installer
+├── setup_global_hotkey.sh    # Hammerspoon installer
+└── whisper.cpp/              # Whisper.cpp (local STT)
     ├── models/
-    │   ├── ggml-base.bin           # Whisper 모델 (141MB)
-    │   └── ggml-silero-v5.1.2.bin  # VAD 모델
-    └── build/bin/whisper-cli       # CLI 도구
+    │   ├── ggml-base.bin           # Whisper model (141MB)
+    │   └── ggml-silero-v5.1.2.bin  # VAD model
+    └── build/bin/whisper-cli       # CLI tool
 ```
 
-## 💡 사용 예시
+## Usage Examples
 
-### VS Code에서 주석 작성
+### Writing comments in VS Code
 ```
-1. 코드에서 주석 위치에 커서
+1. Place cursor at comment position
 2. ⌃⌥Space
-3. "이 함수는 사용자 인증을 처리합니다"
+3. "This function handles user authentication"
 4. ⌃⌥Space
-→ // 이 함수는 사용자 인증을 처리합니다
+→ // This function handles user authentication
 ```
 
-### Notes에서 긴 문장
+### Long sentences in Notes
 ```
 1. ⌃⌥Space
-2. "오늘 할 일은 프로젝트 문서 작성하고, 팀 미팅 참석하고, 코드 리뷰 완료하기"
+2. "Today's tasks are writing project documentation, attending team meeting, and completing code review"
 3. ⌃⌥Space
-→ 전체 문장 자동 입력!
+→ Full sentence auto-typed!
 ```
 
-## 🔧 문제 해결
+## Language Configuration
 
-### 🎤 마이크 아이콘이 계속 켜져 있을 때 (중요!)
+The language is configured in [main_whisper.py:70](main_whisper.py#L70).
 
-주황색 마이크가 녹음 중지 후에도 사라지지 않으면:
+### Current Setting: Korean
+```python
+recorder = WhisperRecorder(language="ko")
+```
+
+### Changing Language
+
+Edit [main_whisper.py](main_whisper.py):
+
+```python
+# For English only
+recorder = WhisperRecorder(language="en")
+
+# For auto-detection (recommended for multilingual use)
+recorder = WhisperRecorder(language="auto")
+
+# For Japanese
+recorder = WhisperRecorder(language="ja")
+
+# For Chinese
+recorder = WhisperRecorder(language="zh")
+```
+
+### Important Notes
+
+1. **Language-locked mode** (`language="ko"`):
+   - Whisper will ALWAYS try to transcribe in Korean
+   - English speech → Korean phonetic transcription (incorrect)
+   - Fast and accurate for single language use
+
+2. **Auto-detection mode** (`language="auto"`):
+   - Whisper detects the spoken language automatically
+   - Works for multilingual users
+   - Slightly slower than language-locked mode
+
+3. **Translation is NOT supported**:
+   - Whisper transcribes speech in the SAME language
+   - Speaking Korean → Korean text only
+   - Speaking English → English text only
+   - Cannot convert Korean speech to English text
+
+### Supported Languages
+
+Whisper supports 99+ languages including:
+- Korean (ko), English (en), Japanese (ja), Chinese (zh)
+- Spanish (es), French (fr), German (de), Russian (ru)
+- And many more...
+
+See [whisper.cpp language codes](https://github.com/ggml-org/whisper.cpp) for full list.
+
+## Troubleshooting
+
+### Microphone icon stays on
+
+If the orange microphone icon doesn't disappear after stopping:
 
 ```bash
-# 긴급 정지 스크립트 실행
+# Run emergency stop script
 ./stop_all.sh
 ```
 
-**원인**: 프로세스가 중복 실행되었거나 제대로 종료되지 않음  
-**해결**: 위 스크립트가 모든 프로세스를 정리하고 마이크 아이콘이 사라집니다
+**Cause**: Duplicate processes or improper termination
+**Solution**: The script cleans up all processes and removes the microphone icon
 
-수동으로 확인하려면:
+Manual check:
 ```bash
-# 실행 중인 프로세스 확인
+# Check running processes
 ps aux | grep main_whisper
 
-# 수동 종료
+# Manual termination
 pkill -9 -f main_whisper.py
 rm -f /tmp/stt_whisper.pid
 ```
 
-### 붙여넣기가 안 될 때
-→ System Settings → Privacy & Security → Accessibility  
-→ Python / Python.app ✅ 체크
+### Auto-paste not working
+→ System Settings → Privacy & Security → Accessibility
+→ Python / Python.app check
 
-### 전사 정확도가 낮을 때
-→ 조용한 환경에서 마이크에 가까이 말하기  
-→ 또는 더 큰 모델 사용 (small, medium)
+### Low transcription accuracy
+→ Speak close to microphone in quiet environment
+→ Or use larger model (small, medium)
 
-### 로그 확인
+### View logs
 ```bash
 tail -f /tmp/stt_whisper.log
 ```
 
-## 📊 모델 비교
+## Model Comparison
 
-| 모델 | 크기 | 속도 | 정확도 | 추천 |
-|------|------|------|--------|------|
-| base | 141MB | 빠름 | ⭐⭐⭐⭐ | 빠른 응답 필요 시 |
-| **small** | **466MB** | **중간** | **⭐⭐⭐⭐⭐** | **✅ 현재 사용 중** |
-| medium | 1.5GB | 느림 | ⭐⭐⭐⭐⭐ | 최고 정확도 |
+| Model | Size | Speed | Accuracy | Recommendation |
+|-------|------|-------|----------|----------------|
+| base | 141MB | Fast | Good | When speed matters |
+| **small** | **466MB** | **Medium** | **Excellent** | **Currently in use** |
+| medium | 1.5GB | Slow | Best | Maximum accuracy |
 
-### 모델 변경하기
+### Changing Models
 
-다른 모델로 바꾸려면:
+To switch to a different model:
 ```bash
-# 1. 모델 다운로드
+# 1. Download model
 cd whisper.cpp
-bash ./models/download-ggml-model.sh medium  # 또는 base, large
+bash ./models/download-ggml-model.sh medium  # or base, large
 
-# 2. whisper_transcriber.py 수정
+# 2. Edit whisper_transcriber.py
 # WHISPER_MODEL = WHISPER_CPP_DIR / "models" / "ggml-medium.bin"
 ```
 
-## 🎯 핵심 기술
+## Core Technologies
 
-1. **Whisper.cpp** - OpenAI Whisper의 C++ 포팅
-   - Metal GPU 가속 (M1/M2/M3/M4 자동 인식)
-   - CPU만 사용 대비 3-4배 빠름
-2. **Hammerspoon** - macOS 자동화, 전역 단축키
-3. **pynput** - Python 키보드 제어, 자동 붙여넣기
-4. **VAD (Voice Activity Detection)** - 음성 자동 감지
+1. **Whisper.cpp** - C++ port of OpenAI Whisper
+   - Metal GPU acceleration (M1/M2/M3/M4 auto-detection)
+   - 3-4x faster than CPU-only
+2. **Hammerspoon** - macOS automation, global hotkeys
+3. **pynput** - Python keyboard control, auto-paste
+4. **VAD (Voice Activity Detection)** - Automatic voice detection
 
-## 💻 GPU 가속 확인
+## GPU Acceleration Check
 
-실행 로그에서 확인 가능:
+Check in execution logs:
 ```bash
 tail -f /tmp/stt_whisper.log | grep -i "gpu\|metal"
 ```
 
-성공적으로 GPU 사용 중이면:
+If GPU is successfully in use:
 ```
 use gpu    = 1
 GPU name:   Apple M3 Max
 ggml_metal_device_init: ...
 ```
 
-## 📝 라이선스
+## License
 
 MIT License
 
-## 🙏 기반 프로젝트 및 참고
+## Credits and References
 
-### 기반 프로젝트
-- [**vertuzz/stt-typer**](https://github.com/vertuzz/stt-typer) - 원본 프로젝트 (Google Gemini API 기반)
-- [**whisper.cpp**](https://github.com/ggml-org/whisper.cpp) - OpenAI Whisper의 C++ 포팅 (로컬 실행)
+### Based On
+- [**vertuzz/stt-typer**](https://github.com/vertuzz/stt-typer) - Original project (Google Gemini API based)
+- [**whisper.cpp**](https://github.com/ggml-org/whisper.cpp) - C++ port of OpenAI Whisper (local execution)
 
-### 사용 도구
-- [Hammerspoon](https://www.hammerspoon.org/) - macOS 자동화 및 전역 단축키
-- [pynput](https://pypi.org/project/pynput/) - Python 키보드 제어
-
+### Tools Used
+- [Hammerspoon](https://www.hammerspoon.org/) - macOS automation and global hotkeys
+- [pynput](https://pypi.org/project/pynput/) - Python keyboard control
