@@ -102,6 +102,49 @@ k-stt-typer/
 → Full sentence auto-typed!
 ```
 
+## Changing Hotkey
+
+The default hotkey is `⌃⌥Space` (Control + Option + Space). To change it:
+
+1. **Open Hammerspoon configuration**:
+   ```bash
+   open ~/.hammerspoon/init.lua
+   ```
+
+2. **Edit the hotkey binding** (line ~8):
+   ```lua
+   -- Current: Ctrl + Alt + Space
+   hs.hotkey.bind({"ctrl", "alt"}, "space", function()
+
+   -- Examples:
+   -- Cmd + Shift + Space
+   hs.hotkey.bind({"cmd", "shift"}, "space", function()
+
+   -- Ctrl + Space only
+   hs.hotkey.bind({"ctrl"}, "space", function()
+
+   -- F13 key (no modifiers)
+   hs.hotkey.bind({}, "f13", function()
+   ```
+
+3. **Reload Hammerspoon**:
+   ```bash
+   killall Hammerspoon && open -a Hammerspoon
+   ```
+
+### Available Modifier Keys
+- `cmd` - Command (⌘)
+- `ctrl` - Control (⌃)
+- `alt` - Option (⌥)
+- `shift` - Shift (⇧)
+- Combine multiple: `{"cmd", "shift", "ctrl"}`
+
+### Available Keys
+- Letters: `"a"`, `"b"`, `"c"`, etc.
+- Function keys: `"f1"`, `"f2"`, ..., `"f20"`
+- Special: `"space"`, `"return"`, `"escape"`, `"tab"`
+- See [Hammerspoon key codes](https://www.hammerspoon.org/docs/hs.hotkey.html) for full list
+
 ## Language Configuration
 
 The language is configured in [main_whisper.py:70](main_whisper.py#L70).

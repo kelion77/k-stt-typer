@@ -83,6 +83,49 @@ k-stt-typer/
     └── build/bin/whisper-cli       # CLI 도구
 ```
 
+## 단축키 변경
+
+기본 단축키는 `⌃⌥Space` (Control + Option + Space)입니다. 변경하려면:
+
+1. **Hammerspoon 설정 파일 열기**:
+   ```bash
+   open ~/.hammerspoon/init.lua
+   ```
+
+2. **단축키 바인딩 수정** (8번째 줄 근처):
+   ```lua
+   -- 현재: Ctrl + Alt + Space
+   hs.hotkey.bind({"ctrl", "alt"}, "space", function()
+
+   -- 예시:
+   -- Cmd + Shift + Space
+   hs.hotkey.bind({"cmd", "shift"}, "space", function()
+
+   -- Ctrl + Space만
+   hs.hotkey.bind({"ctrl"}, "space", function()
+
+   -- F13 키 (수식키 없이)
+   hs.hotkey.bind({}, "f13", function()
+   ```
+
+3. **Hammerspoon 재시작**:
+   ```bash
+   killall Hammerspoon && open -a Hammerspoon
+   ```
+
+### 사용 가능한 수식키
+- `cmd` - Command (⌘)
+- `ctrl` - Control (⌃)
+- `alt` - Option (⌥)
+- `shift` - Shift (⇧)
+- 여러 개 조합: `{"cmd", "shift", "ctrl"}`
+
+### 사용 가능한 키
+- 문자: `"a"`, `"b"`, `"c"` 등
+- 펑션키: `"f1"`, `"f2"`, ..., `"f20"`
+- 특수키: `"space"`, `"return"`, `"escape"`, `"tab"`
+- 전체 목록: [Hammerspoon 키 코드](https://www.hammerspoon.org/docs/hs.hotkey.html)
+
 ## 언어 설정
 
 언어는 [main_whisper.py:70](main_whisper.py#L70)에서 설정됩니다.
