@@ -42,8 +42,8 @@ hs.hotkey.bind({"ctrl", "alt"}, "space", function()
     hs.task.new("/bin/bash", nil, {"${PROJECT_DIR}/toggle_whisper.sh"}):start()
 end)
 
--- Secondary hotkey: Shift + Cmd + . (period)
-hs.hotkey.bind({"shift", "cmd"}, ".", function()
+-- Secondary hotkey: Shift + Cmd + , (comma)
+hs.hotkey.bind({"shift", "cmd"}, ",", function()
     -- Same toggle script
     hs.task.new("/bin/bash", nil, {"${PROJECT_DIR}/toggle_whisper.sh"}):start()
 end)
@@ -64,6 +64,6 @@ echo "5. Press hotkey anywhere to use STT!"
 echo ""
 echo "Done! Your hotkeys are configured:"
 echo "  - Primary: ⌃⌥Space (Control+Option+Space)"
-echo "  - Secondary: ⇧⌘. (Shift+Command+Period)"
+echo "  - Secondary: ⇧⌘, (Shift+Command+Comma)"
 echo ""
 
