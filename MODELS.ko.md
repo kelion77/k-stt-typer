@@ -140,7 +140,7 @@ bash ./models/download-ggml-model.sh large-v3
 ## 모델 다운로드
 
 ```bash
-cd /Users/sunglee/Documents/Scratch/stt-typer/whisper.cpp
+cd whisper.cpp
 
 # 기본 모델
 bash ./models/download-ggml-model.sh tiny
