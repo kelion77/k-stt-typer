@@ -98,11 +98,11 @@ k-stt-typer/
    hs.hotkey.bind({"ctrl", "alt"}, "space", function()
 
    -- 예시:
+   -- Ctrl + Alt + . (마침표)
+   hs.hotkey.bind({"ctrl", "alt"}, ".", function()
+
    -- Cmd + Shift + Space
    hs.hotkey.bind({"cmd", "shift"}, "space", function()
-
-   -- Ctrl + Space만
-   hs.hotkey.bind({"ctrl"}, "space", function()
 
    -- F13 키 (수식키 없이)
    hs.hotkey.bind({}, "f13", function()

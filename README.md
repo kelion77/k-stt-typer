@@ -117,11 +117,11 @@ The default hotkey is `⌃⌥Space` (Control + Option + Space). To change it:
    hs.hotkey.bind({"ctrl", "alt"}, "space", function()
 
    -- Examples:
+   -- Ctrl + Alt + . (period)
+   hs.hotkey.bind({"ctrl", "alt"}, ".", function()
+
    -- Cmd + Shift + Space
    hs.hotkey.bind({"cmd", "shift"}, "space", function()
-
-   -- Ctrl + Space only
-   hs.hotkey.bind({"ctrl"}, "space", function()
 
    -- F13 key (no modifiers)
    hs.hotkey.bind({}, "f13", function()
